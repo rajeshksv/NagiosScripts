@@ -1,0 +1,12 @@
+/dev/mapper/vgroot-root
+                      655360   27906  627454    5% /
+tmpfs                8209128       6 8209122    1% /lib/init/rw
+udev                 8209128     638 8208490    1% /dev
+tmpfs                8209128       4 8209124    1% /dev/shm
+/dev/sda1             130560     241  130319    1% /boot
+/dev/mapper/vgroot-home
+                      983040  276498  706542   29% /home
+/dev/mapper/vgroot-usr
+                     2293760  374366 1919394   17% /usr
+/dev/mapper/vgroot-var
+                     52428800  111681 52317119    1% /var

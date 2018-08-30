@@ -1,0 +1,20 @@
+thresholds_file='/usr/lib/nagios/fk-nagios-common/thresholds/system_alerts.conf'
+if [ -e $thresholds_file ]; then
+        source $thresholds_file
+else
+        nagios_diskUsage_warning=88
+        nagios_diskUsage_critical=92
+        interval=300
+        nagios_diskUsage_exclusions="/dev/shm,/dev,/boot,/lib/init/rw,/var/cache/mylvmbackup/mnt/backup,/var/cache/mylvmbackup/backup,/mnt/10#,/trafficserver_cache"
+fi
+
+IFS=',' read -ra diskUsage_exclusions <<< "$nagios_diskUsage_exclusions"
+exclusions=""
+for ex in ${diskUsage_exclusions[@]}
+do
+  exclusions="$exclusions -x $ex"
+done
+
+sleep $interval
+
+exec /usr/lib/nagios/plugins/fk-nsca-wrapper/nsca_wrapper -H `hostname -f` -S 'Disk Usage' -b /usr/sbin/send_nsca -c /etc/send_nsca.cfg -C "perl /usr/lib/nagios/fk-nagios-common/plugins/scripts/check_disk_usage.pl -w $nagios_diskUsage_warning -c $nagios_diskUsage_critical $exclusions"
